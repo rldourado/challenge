@@ -33,8 +33,8 @@ jobs:
 
       - name: Setup git credentials
         run: |
-          git config user.name ${{ secrets.USER_NAME }}
-          git config user.email ${{ secrets.USER_EMAIL }}
+          git config user.name "${{ secrets.USER_NAME }}"
+          git config user.email "${{ secrets.USER_EMAIL }}"
     
       - name: Update version
         run: |
