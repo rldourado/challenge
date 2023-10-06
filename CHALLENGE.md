@@ -4,7 +4,7 @@ The goal of this test is to "containerize" a sample application and write the ne
 
 ## Delivery
 
-To submit the code, publish it to a public github repository, or a zipped file with all the contents that allow the code to be executed. Feel free to add a README.md file with instructions.
+To submit the code, publish it to a public GitHub repository, or a zipped file with all the contents that allow the code to be executed. Feel free to add a README.md file with instructions.
 
 ## Evaluation Criteria
 
