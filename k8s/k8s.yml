@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: challenge-app
+spec:
+  ports:
+    - name: tcp3000
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: challenge-app
+  sessionAffinity: ClientIP
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: challenge-app
+  name: challenge-app
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: challenge-app
+  template:
+    metadata:
+      labels:
+        app: challenge-app
+    spec:
+      containers:
+      - image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+        imagePullPolicy: IfNotPresent
+        name: challenge-app
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 5m
+            memory: 32Mi
+        ports:
+          - name: tcp3000
+            containerPort: 3000
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: ecrcred
