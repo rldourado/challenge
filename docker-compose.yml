@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:11.1.2-jammy
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MARIADB_DATABASE=$MARIADB_DATABASE
+      - MARIADB_USER=$MARIADB_USER
+      - MARIADB_PASSWORD=$MARIADB_PASSWORD
+      - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
+    ports:
+      - $MARIADB_LOCAL_PORT:$MARIADB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/mysql
+  app:
+    container_name: app
+    depends_on:
+      - mariadb
+    build:
+      context: ./
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    environment:
+      - TYPEORM_CONNECTION=mysql
+      - TYPEORM_HOST=mariadb
+      - TYPEORM_USERNAME=$MARIADB_USER
+      - TYPEORM_PASSWORD=$MARIADB_PASSWORD
+      - TYPEORM_DATABASE=$MARIADB_DATABASE
+      - TYPEORM_PORT=$MARIADB_DOCKER_PORT
+      - TYPEORM_SYNCHRONIZE=true
+      - TYPEORM_LOGGING=true
+      - TYPEORM_ENTITIES=./dist/**/entity/*.js,./src/entity/*.js
+    stdin_open: true
+    tty: true
+
+volumes: 
+  db:

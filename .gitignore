@@ -1,0 +1,7 @@
+dist
+node_modules
+src/**/*.js
+src/**/*.js.map
+
+.env
+ormconfig.env
