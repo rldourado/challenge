@@ -73,6 +73,7 @@ jobs:
           docker build \
           --tag $ECR_REGISTRY/$ECR_REPOSITORY:latest \
           --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+          --file Dockerfile.prod \
           .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
