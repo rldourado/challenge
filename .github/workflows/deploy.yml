@@ -1,8 +1,8 @@
 name: Build and push image to ECR & Deploy to EKS
 
+# configure manual trigger
 on:
-  workflow_run:
-    branches: [master, main]
+  workflow_dispatch:
 
 env:
   VERSION_FILE: package.json
