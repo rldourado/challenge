@@ -1,6 +1,6 @@
 {
   "name": "typeorm-typescript-express-example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Example how to use Express and TypeORM with TypeScript.",
   "license": "MIT",
   "readmeFilename": "README.md",
