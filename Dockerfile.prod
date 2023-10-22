@@ -15,9 +15,29 @@ RUN yarn run build
 
 # Final Container
 FROM node:20-alpine3.17
+
+ARG USERNAME=app
+ARG GROUP=app
+ARG USER_UID=1001
+ARG USER_GID=$USER_UID
+
+# Create a group and user
+RUN addgroup -g $USER_UID $GROUP
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --ingroup "$GROUP" \
+    --no-create-home \
+    --uid "$USER_UID" \
+    "$USERNAME"
+
 WORKDIR /app
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
 COPY package.json /app
 EXPOSE 3000
+
+USER $USERNAME
+
 CMD [ "yarn", "start:prod" ]

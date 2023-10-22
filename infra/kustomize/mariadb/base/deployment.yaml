@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  labels:
+    app: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      volumes:
+        - name: mariadb-pv-storage
+          persistentVolumeClaim:
+            claimName: mariadb-pv-claim
+      containers:
+        - name: mariadb
+          image: 'mariadb:11.1.2-jammy'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp3306
+              containerPort: 3306
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: mariadb-secret
+                optional: false
+          volumeMounts:
+            - name: mariadb-pv-storage
+              mountPath: /var/lib/mysql
+          resources: {}
+          livenessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 5
+            exec:
+              command: ["sh", "-c", "exec", "mariadb-admin", "ping", "--host=127.0.0.1", "--user=$MARIADB_USER", "--password=$MARIADB_PASSWORD"]
+          readinessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 5
+            timeoutSeconds: 5
+            exec:
+              command: ["sh", "-c", "exec", "mariadb-admin", "ping", "--host=127.0.0.1", "--user=$MARIADB_USER", "--password=$MARIADB_PASSWORD"]

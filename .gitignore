@@ -3,5 +3,8 @@ node_modules/
 src/**/*.js
 src/**/*.js.map
 
+infra/volume/**/*
+!infra/volume/.gitkeep
+
 .env
 ormconfig.env

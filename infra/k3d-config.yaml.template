@@ -1,0 +1,25 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: ${CLUSTER}
+servers: 2
+agents: 2
+image: rancher/k3s:v1.27.4-k3s1
+volumes: # repeatable flags are represented as YAML lists
+  - volume: ${PWD}/volume:/tmp/k3dvol
+    nodeFilters:
+      - server:*
+      - agent:*
+ports:
+  - port: ${HTTPPORT}:80
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true
+    timeout: "300s" 
+    disableImageVolume: false
+    disableLoadbalancer: false
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true

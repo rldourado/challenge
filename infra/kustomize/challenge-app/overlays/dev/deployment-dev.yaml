@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge-app
+spec:
+  selector:
+    matchLabels:
+      app: challenge-app
+  replicas: 2 # Update the replica count to 2
+  template:
+    spec:
+      containers:
+      - name: challenge-app

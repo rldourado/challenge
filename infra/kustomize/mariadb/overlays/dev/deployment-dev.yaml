@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  replicas: 1 # Update the replica count to 1
+  template:
+    spec:
+      containers:
+      - name: mariadb

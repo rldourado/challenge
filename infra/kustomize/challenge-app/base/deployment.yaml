@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge-app
+  labels:
+    app: challenge-app
+spec:
+  selector:
+    matchLabels:
+      app: challenge-app
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: challenge-app
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - challenge-app
+                topologyKey: "kubernetes.io/hostname"
+              weight: 100
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: challenge
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: challenge-app
+      containers:
+        - name: challenge-app
+          image: 'rldourado/challenge-app:latest'
+          imagePullPolicy: IfNotPresent
+          # command: ["sh", "-c", "exec", "yarn", "start:prod"]
+          ports:
+            - name: tcp3000
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: challenge-app-secret
+                optional: false
+          resources: {}
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            tcpSocket:
+              port: 3000
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            tcpSocket:
+              port: 3000
+          securityContext:
+            readOnlyRootFilesystem: false
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
