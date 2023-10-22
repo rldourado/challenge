@@ -125,4 +125,4 @@ NAMESPACE <br />
 
 #### Status
 
-[![Linter](https://github.com/rldourado/challenge/actions/workflows/linter.yml/badge.svg)](https://github.com/rldourado/challenge) [![Deploy](https://github.com/rldourado/challenge/actions/workflows/deploy.yml/badge.svg)](https://github.com/rldourado/challenge)
+[![Build](https://github.com/rldourado/challenge/actions/workflows/build.yml/badge.svg)](https://github.com/rldourado/challenge) [![Linter](https://github.com/rldourado/challenge/actions/workflows/linter.yml/badge.svg)](https://github.com/rldourado/challenge) [![Deploy](https://github.com/rldourado/challenge/actions/workflows/deploy.yml/badge.svg)](https://github.com/rldourado/challenge)
