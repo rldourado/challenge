@@ -12,11 +12,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/posts",
+					"raw": "localhost:8080/posts",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "8080",
 					"path": [
 						"posts"
 					]
@@ -30,11 +30,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/posts/1",
+					"raw": "localhost:8080/posts/1",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "8080",
 					"path": [
 						"posts",
 						"1"
@@ -59,11 +59,11 @@
 					"raw": "{\r\n    \"title\": \"Teste\",\r\n    \"text\": \"Teste\"\r\n}"
 				},
 				"url": {
-					"raw": "localhost:3000/posts",
+					"raw": "localhost:8080/posts",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "8080",
 					"path": [
 						"posts"
 					]

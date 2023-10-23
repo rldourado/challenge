@@ -1,42 +1,75 @@
 # Challenge
 
-## Test
+## Instructions
 
-#### Requirements
+#### Prerequisites
 
-- docker (💻 [Install Instructions](https://docs.docker.com/engine/install/ubuntu/))
+- Docker with Compose - Follow instructions [here](https://docs.docker.com/engine/install/ubuntu/ "Install Docker Engine on Ubuntu")
 - k3d (💻 [Install Instructions](https://k3d.io/))
 - kubectl (💻 [Install Instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/))
 - postman (💻 [Install Instructions](https://www.postman.com/))
 - helm (💻 [Install Instructions](https://helm.sh/))
 - wrk benchmark tool (💻 [Install Instructions](https://github.com/wg/wrk))
 
-#### Running Locally
+#### How to build and run locally
 
-Copy .env-sample file to .env and enter sample values to environment variables.
-
-```
-cp .env-sample .env
-vi .env
-```
-
-To run application locally:
+Copy `.env-sample` to `.env` and edit the last one setting up environment variables like example bellow:
 
 ```
-docker compose up -d
+MARIADB_DATABASE=challenge
+MARIADB_USER=challenge
+MARIADB_PASSWORD=changeme
+MARIADB_ROOT_PASSWORD=changemeroot
+MARIADB_LOCAL_PORT=3306
+MARIADB_DOCKER_PORT=3306
+
+NODE_LOCAL_PORT=3000
+NODE_DOCKER_PORT=3000
+
+TYPEORM_CONNECTION=mysql
+TYPEORM_HOST=mariadb
+TYPEORM_USERNAME=challenge
+TYPEORM_PASSWORD=changeme
+TYPEORM_DATABASE=challenge
+TYPEORM_PORT=3306
+TYPEORM_SYNCHRONIZE=true
+TYPEORM_LOGGING=true
+TYPEORM_ENTITIES=./dist/**/entity/*.js,./src/entity/*.js
 ```
+
+Then run:
+
+```
+$ docker compose up -d
+```
+
+This will run a MariaDB locally (accessible by `$MARIADB_LOCAL_PORT` port) and the app (on `$NODE_LOCAL_PORT` port).
+
+To see if the database and application is running, just use:
+
+```
+$ docker compose ps
+```
+
+To stop both:
+
+```
+$ docker compose down
+```
+
+#### Running Locally inside a k8s cluster
 
 To simulate k8s cluster locally using k3d (k3s in docker):
 
 ```
-./infra/k3d-run.sh
-
+cd infra
+./k3d-run.sh
 ```
 
 To stop k3s cluster and clean:
 
 ```
-./infra/k3d-destroy.sh
+./k3d-destroy.sh
 ```
 
 #### Testing
@@ -48,7 +81,7 @@ cd infra
 ./load-test.sh
 ```
 
-Benchmark Application
+#### Benchmark Application
 
 ```
 wrk -t50 -c500 -d30s http://localhost:8080/posts
@@ -66,53 +99,14 @@ Get one post
 curl -v http://localhost:8080/posts/<id>
 ```
 
-
-
-## Instructions
-
-#### Prerequisites
-
-- Docker with Compose - Follow instructions [here](https://docs.docker.com/engine/install/ubuntu/ "Install Docker Engine on Ubuntu")
-
-#### How to build and run locally
-
-Copy `.env-sample` to `.env` and edit the last one setting up environment variables like example bellow:
-
-```
-MARIADB_DATABASE=chalenge
-MARIADB_USER=chalenge
-MARIADB_PASSWORD=changeme
-MARIADB_ROOT_PASSWORD=changemeroot
-MARIADB_LOCAL_PORT=3306
-MARIADB_DOCKER_PORT=3306
-
-NODE_LOCAL_PORT=3000
-NODE_DOCKER_PORT=3000
-```
-
-Then run:
-
-```
-$ docker compose up -d
-```
-
-This will run a MariaDB locally (acessible by `$MARIADB_LOCAL_PORT` port) and the app (on `$NODE_LOCAL_PORT` port).
-
-To see if the database and application is running, just use:
-
-```
-$ docker compose ps
-```
-
-To stop both:
-
-```
-$ docker compose down
-```
-
 ## Github Actions
 
 #### Secrets:
+
+USER_NAME <br />
+USER_EMAIL <br />
+DOCKER_USERNAME <br />
+DOCKER_PASSWORD <br />
 
 AWS_ACCESS_KEY_ID <br />
 AWS_SECRET_ACCESS_KEY <br />
